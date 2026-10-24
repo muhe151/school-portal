@@ -1,0 +1,7 @@
+node_modules/
+school.db
+sessions.db
+.env
+uploads/*
+!uploads/.gitkeep
+.DS_Store

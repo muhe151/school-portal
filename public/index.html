@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Excellence Academy | Portal</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="brand"><i class="fas fa-graduation-cap"></i> Excellence<span>Academy</span></div>
+  <div id="userBadge" class="user-badge" style="display:none;" onclick="showPage('profile')">
+    <i class="fas fa-user-circle"></i> <span id="userBadgeName">Profile</span>
+  </div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <span><i class="fas fa-graduation-cap"></i> Menu</span>
+    <button class="close-btn" id="closeSidebar"><i class="fas fa-times"></i></button>
+  </div>
+  <nav class="sidebar-nav" id="sidebarNav"></nav>
+  <div class="sidebar-footer"><p>© 2026 Excellence Academy</p></div>
+</aside>
+
+<div class="overlay" id="overlay"></div>
+
+<main>
+
+  <!-- ===== HOME ===== -->
+  <section id="page-home" class="page active">
+    <div class="hero">
+      <div class="hero-text">
+        <span class="pill"><i class="fas fa-bullhorn"></i> Welcome</span>
+        <h1>Nurturing Tomorrow's Leaders</h1>
+        <p>Modern education, dedicated teachers, and a vibrant community — all in one place.</p>
+      </div>
+      <div class="hero-img"></div>
+    </div>
+
+    <div class="login-home">
+      <div class="login-home-header">
+        <h2><i class="fas fa-sign-in-alt"></i> Portal Login</h2>
+        <p>Enter your credentials to access your dashboard</p>
+      </div>
+      <form id="homeLoginForm" class="login-home-form">
+        <div class="form-row">
+          <div class="form-col">
+            <label><i class="fas fa-id-card"></i> UGR / Staff ID</label>
+            <input id="loginUgr" required placeholder="UGR/2024/001 or ADMIN001" />
+          </div>
+            <div class="form-col">
+            <label><i class="fas fa-lock"></i> Password</label>
+            <input id="loginPassword" type="password" required placeholder="password" />
+            <a href="#" onclick="toggleForgotPassword(event)" style="font-size:0.8rem; color:var(--accent); text-decoration:none; margin-top:4px; display:inline-block;">Forgot password?</a>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-block">
+          <i class="fas fa-arrow-right"></i> Login
+        </button>
+        <p id="loginErr" class="err"></p>
+        <div class="demo-hints">
+          <p><strong>Demo accounts:</strong></p>
+          <p>Admin: <code>ADMIN001 / admin123</code></p>
+          <p>Registrar: <code>REG001 / registrar123</code></p>
+          <p>Teacher: <code>TCH001 / teacher123</code></p>
+          <p>Student: <code>UGR/2024/001 / student123</code></p>
+        </div>
+        <p class="center-text">
+          <span id="regStatusText">Loading...</span>
+          <button type="button" class="link-btn" id="openRegBtn" style="display:none;" onclick="showPage('register')">
+            Register now →
+          </button>
+        </p>
+      </form>
+    </div>
+        <!-- FORGOT PASSWORD FORM (Hidden by default) -->
+    <div id="forgotPasswordBox" class="login-home" style="display:none;">
+      <div class="login-home-header">
+        <h2><i class="fas fa-key"></i> Reset Your Password</h2>
+        <p>Enter your UGR and the guardian phone number on file.</p>
+      </div>
+      <form id="forgotPasswordForm" class="login-home-form">
+        <div class="form-row">
+          <div class="form-col">
+            <label>UGR Number</label>
+            <input id="forgotUgr" required placeholder="UGR/2024/001" />
+          </div>
+          <div class="form-col">
+            <label>Guardian Phone</label>
+            <input id="forgotPhone" required placeholder="+251 923701565" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-col">
+            <label>New Password</label>
+            <input id="forgotNewPassword" type="password" required placeholder="New password" />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-block"><i class="fas fa-save"></i> Reset Password</button>
+        <p id="forgotErr" class="err"></p>
+        <p class="center-text" style="margin-top:1rem;">
+          <button type="button" class="link-btn" onclick="toggleForgotPassword(event)">← Back to Login</button>
+        </p>
+      </form>
+    </div>
+
+    <h2 class="section-title"><i class="fas fa-newspaper"></i> Latest News</h2>
+    <div id="newsPreview" class="news-grid"></div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="page-about" class="page">
+    <div class="about-hero">
+      <img id="aboutImage" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200&auto=format&fit=crop&q=80" alt="School" />
+      <div class="about-hero-text">
+        <h1 id="aboutTitle">Excellence Academy</h1>
+        <p>Building character. Inspiring minds. Shaping futures.</p>
+      </div>
+    </div>
+    <div class="about-cards">
+      <div class="about-card"><h3><i class="fas fa-book"></i> Our History</h3><p id="aboutHistory"></p></div>
+      <div class="about-card"><h3><i class="fas fa-bullseye"></i> Our Mission</h3><p id="aboutMission"></p></div>
+      <div class="about-card"><h3><i class="fas fa-eye"></i> Our Vision</h3><p id="aboutVision"></p></div>
+    </div>
+  </section>
+
+  <!-- ===== NEWS ===== -->
+  <section id="page-news" class="page">
+    <h2 class="section-title"><i class="fas fa-newspaper"></i> All School News</h2>
+    <div id="newsList" class="news-grid"></div>
+  </section>
+
+    <!-- ===== REGISTER ===== -->
+  <section id="page-register" class="page">
+    <div class="page-header">
+      <h2><i class="fas fa-user-plus"></i> Student Registration</h2>
+      <p class="muted" id="regClosedMsg"></p>
+    </div>
+    <div class="auth-wrap" style="max-width:900px;">
+      <form id="registerForm" class="auth-form" enctype="multipart/form-data">
+
+        <div class="form-section-title"><i class="fas fa-id-card"></i> Step 1 — Verify your UGR</div>
+        <div class="form-row">
+          <div class="form-col">
+            <label>UGR (pre-registered by admin) *</label>
+            <input id="regUgr" required placeholder="UGR/2024/004" onblur="verifyUgr()" />
+          </div>
+          <div class="form-col">
+            <label>Grade *</label>
+            <select id="regGrade">
+              <option>Grade 9</option><option selected>Grade 10</option>
+              <option>Grade 11</option><option>Grade 12</option>
+            </select>
+          </div>
+        </div>
+        <p id="ugrStatus" class="hint"></p>
+
+        <div class="form-section-title"><i class="fas fa-user"></i> Step 2 — Personal Information</div>
+        <div class="form-row">
+          <div class="form-col"><label>Full Name *</label><input id="regName" required placeholder="Jane Doe" /></div>
+          <div class="form-col"><label>Email</label><input id="regEmail" type="email" placeholder="jane@school.edu" /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-col"><label>Phone</label><input id="regPhone" placeholder="+251 923701565" /></div>
+          <div class="form-col"><label>Birth Place</label><input id="regBirthPlace" placeholder="Addis Ababa" /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-col"><label>Birth Date</label><input id="regBirthDate" type="date" /></div>
+          <div class="form-col"><label>Previous School *</label><input id="regPrevSchool" placeholder="Previous school name" /></div>
+        </div>
+        <label>Home Address</label>
+        <textarea id="regAddress" rows="2" placeholder="Full address"></textarea>
+
+        <div class="form-section-title"><i class="fas fa-users"></i> Step 3 — Family / Guardian</div>
+        <div class="form-row">
+          <div class="form-col"><label>Father's Name</label><input id="regFather" placeholder="Father's full name" /></div>
+          <div class="form-col"><label>Mother's Name</label><input id="regMother" placeholder="Mother's full name" /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-col"><label>Guardian Phone *</label><input id="regGuardianPhone" placeholder="+251 923701565" /></div>
+          <div class="form-col"><label>Password *</label><input id="regPassword" type="password" required placeholder="Create password" /></div>
+        </div>
+
+        <div class="form-section-title"><i class="fas fa-file-upload"></i> Step 4 — Upload Documents</div>
+        <div class="form-row">
+          <div class="form-col">
+            <label>Profile Photo</label>
+            <input id="regPhoto" type="file" accept="image/*" />
+          </div>
+          <div class="form-col">
+            <label>Previous Transcript (PDF/Image)</label>
+            <input id="regTranscript" type="file" accept=".pdf,image/*" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-col">
+            <label>Certificate (PDF/Image)</label>
+            <input id="regCertificate" type="file" accept=".pdf,image/*" />
+          </div>
+        </div>
+
+        <!-- ===== NEW APPROVAL SECTION ===== -->
+        <div class="form-section-title"><i class="fas fa-clipboard-check"></i> Step 5 — Review & Approve</div>
+        <p class="muted" style="font-size:0.85rem; margin-bottom:0.8rem;">
+          Please review the information you entered below. If everything is correct, check the box to approve.
+        </p>
+        
+        <div class="review-card" id="reviewDetails">
+          <p class="muted" style="text-align:center; padding: 1rem;">Please fill out the form above to generate your summary.</p>
+        </div>
+
+        <div class="approval-checkbox">
+          <input type="checkbox" id="approveInfo" required disabled />
+          <label for="approveInfo">I confirm that all the information provided above is correct and I approve it.</label>
+        </div>
+        <!-- ================================ -->
+
+        <div class="form-section-title"><i class="fas fa-money-bill"></i> Payment</div>
+        <p class="muted">Select the account you paid to, enter the amount, and upload your receipt.</p>
+        <label>Payment Account *</label>
+        <select id="regAccount" onchange="showAccountInfo()"><option value="">— Select bank —</option></select>
+        <div id="accountInfo" class="account-info"></div>
+        <div class="form-row">
+          <div class="form-col"><label>Amount Paid (ETB)</label><input id="regAmount" type="number" placeholder="5000" /></div>
+          <div class="form-col"><label>Upload Receipt *</label><input id="regReceipt" type="file" accept="image/*,.pdf" /></div>
+        </div>
+
+        <button type="submit" class="btn btn-block" style="margin-top:1rem;">
+          <i class="fas fa-check"></i> Complete Registration
+        </button>
+        <p id="regErr" class="err"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== PROFILE ===== -->
+  <section id="page-profile" class="page">
+    <div class="page-header"><h2><i class="fas fa-user-circle"></i> My Profile</h2></div>
+    <div class="profile-card" id="profileCard"></div>
+  </section>
+
+  <!-- ===== ADMIN ===== -->
+  <section id="page-admin" class="page">
+    <div class="dash-header">
+      <div>
+        <h2><i class="fas fa-user-shield"></i> Admin Dashboard</h2>
+        <p class="muted">Full system control</p>
+      </div>
+      <button class="btn btn-secondary" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card"><i class="fas fa-users"></i><div><h3 id="statStudents">0</h3><p>Students</p></div></div>
+      <div class="stat-card"><i class="fas fa-user-clock"></i><div><h3 id="statPendingStudents">0</h3><p>Pending Approvals</p></div></div>
+      <div class="stat-card"><i class="fas fa-chalkboard-teacher"></i><div><h3 id="statTeachers">0</h3><p>Teachers</p></div></div>
+      <div class="stat-card"><i class="fas fa-money-bill"></i><div><h3 id="statPayments">0</h3><p>Pending Payments</p></div></div>
+      <div class="stat-card"><i class="fas fa-marker"></i><div><h3 id="statMarks">0</h3><p>Marks Approval</p></div></div>
+      <div class="stat-card"><i class="fas fa-message"></i><div><h3 id="statComplaints">0</h3><p>Open Messages</p></div></div>
+    </div>
+
+    <div class="card">
+      <h3><i class="fas fa-door-open"></i> Registration Window</h3>
+      <p>Control whether students can self-register.</p>
+      <div class="toggle-row">
+        <span>Student self-registration:</span>
+        <button class="btn" id="regToggleBtn" onclick="toggleRegistration()">...</button>
+      </div>
+    </div>
+
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-tab="users">👥 Users</button>
+      <button class="admin-tab" data-tab="pre-register">📝 Pre-Register Student</button>
+      <button class="admin-tab" data-tab="approvals">⏳ Pending Approvals</button>
+      <button class="admin-tab" data-tab="payments">💰 Payments</button>
+      <button class="admin-tab" data-tab="marks-approval">✔ Marks Approval</button>
+      <button class="admin-tab" data-tab="accounts">🏦 Accounts</button>
+      <button class="admin-tab" data-tab="courses">📚 Courses</button>
+      <button class="admin-tab" data-tab="schedules">📅 Schedules</button>
+      <button class="admin-tab" data-tab="complaints">💬 Messages</button>
+      <button class="admin-tab" data-tab="news">📰 News</button>
+      <button class="admin-tab" data-tab="about">🏫 About</button>
+    </div>
+
+    <!-- USERS -->
+    <div id="tab-users" class="admin-tab-content active">
+      <div class="card">
+        <h3><i class="fas fa-user-plus"></i> Add Staff User (Teacher/Registrar)</h3>
+        <div class="grid-2">
+          <select id="newRole">
+            <option value="teacher">Teacher</option>
+            <option value="registrar">Registrar</option>
+          </select>
+          <input id="newUgr" placeholder="TCH005 or REG002" />
+          <input id="newName" placeholder="Full name" />
+          <input id="newEmail" placeholder="Email" />
+          <input id="newPhone" placeholder="Phone" />
+          <input id="newDepartment" placeholder="Department (teachers)" />
+          <input id="newPassword" placeholder="Password" value="teacher123" />
+          <input id="newPhoto" type="file" accept="image/*" />
+        </div>
+        <button class="btn" onclick="adminAddUser()"><i class="fas fa-check"></i> Add User</button>
+        <p id="newUserMsg" class="hint"></p>
+      </div>
+      <div class="card mt-1">
+        <h3><i class="fas fa-users"></i> All Users</h3>
+        <div id="adminUsersList"></div>
+      </div>
+    </div>
+        <!-- PENDING APPROVALS -->
+    <div id="tab-approvals" class="admin-tab-content">
+      <div class="card">
+        <h3><i class="fas fa-user-clock"></i> Students Awaiting Approval</h3>
+        <p class="muted">These students have submitted their registration. Review their information and approve them to activate their account.</p>
+        <div id="approvalsList"></div>
+      </div>
+    </div>
+
+    <!-- PRE-REGISTER -->
+    <div id="tab-pre-register" class="admin-tab-content">
+      <div class="card">
+        <h3><i class="fas fa-clipboard-list"></i> Pre-Register Student</h3>
+        <p class="muted">Create a placeholder student. They will complete full registration themselves using this UGR.</p>
+        <div class="grid-2">
+          <input id="preUgr" placeholder="UGR/2024/004" />
+          <input id="preName" placeholder="Student full name" />
+          <select id="preGrade">
+            <option>Grade 9</option><option selected>Grade 10</option>
+            <option>Grade 11</option><option>Grade 12</option>
+          </select>
+        </div>
+        <button class="btn" onclick="adminPreRegister()"><i class="fas fa-check"></i> Pre-Register</button>
+        <p id="preMsg" class="hint"></p>
+      </div>
+      <div class="card mt-1">
+        <h3><i class="fas fa-hourglass-half"></i> Students Awaiting Registration</h3>
+        <div id="preRegisteredList"></div>
+      </div>
+    </div>
+
+    <!-- PAYMENTS -->
+    <div id="tab-payments" class="admin-tab-content">
+      <div class="card">
+        <h3><i class="fas fa-money-check"></i> Payment Approvals</h3>
+        <div id="paymentsList"></div>
+      </div>
+    </div>
+
+    <!-- MARKS APPROVAL -->
+    <div id="tab-marks-approval" class="admin-tab-content">
+      <div class="card">
+        <h3><i class="fas fa-check-double"></i> Teacher Marks Awaiting Approval</h3>
+        <p class="muted">Approve to forward to registrar for final evaluation.</p>
+        <div id="marksApprovalList"></div>
+      </div>
+    </div>
+
+    <!-- ACCOUNTS -->
+    <div id="tab-accounts" class="admin-tab-content">
+      <div class="card">
+        <h3><i class="fas fa-plus"></i> Add Payment Account</h3>
+        <div class="grid-2">
+          <input id="accBank" placeholder="Bank name" />
+          <input id="accNumber" placeholder="Account number" />
+          <input id="accName" placeholder="Account name" />
+          <input id="accBranch" placeholder="Branch" />
+        </div>
+        <button class="btn" onclick="adminAddAccount()"><i class="fas fa-check"></i> Add Account</button>
+      </div>
+      <div class="card mt-1">
+        <h3><i class="fas fa-university"></i> Payment Accounts</h3>
+        <div id="accountsList"></div>
+      </div>
+    </div>
+
+    <!-- COURSES -->
+    <div id="tab-courses" class="admin-tab-content">
+      <div class="card">
+        <h3><i class="fas fa-plus"></i> Add Course</h3>
+        <div class="grid-2">
+          <input id="courseCode" placeholder="MATH103" />
+          <input id="courseName" placeholder="Course name" />
+          <input id="courseTeacher" placeholder="Teacher UGR" />
+          <select id="courseSemester">
+            <option>Semester 1</option><option>Semester 2</option>
+          </select>
+          <select id="courseGrade">
+            <option>Grade 9</option><option selected>Grade 10</option>
+            <option>Grade 11</option><option>Grade 12</option>
+          </select>
+          <input id="courseCredits" type="number" value="3" />
+        </div>
+        <button class="btn" onclick="adminAddCourse()"><i class="fas fa-check"></i> Add Course</button>
+      </div>
+      <div class="card mt-1">
+        <h3><i class="fas fa-book"></i> All Courses</h3>
+        <div id="adminCoursesList"></div>
+      </div>
+    </div>
+
+    <!-- SCHEDULES -->
+    <div id="tab-schedules" class="admin-tab-content">
+      <div class="card">
+        <h3><i class="fas fa-plus"></i> Add Schedule Entry</h3>
+        <div class="grid-2">
+          <input id="schCourseCode" placeholder="MATH101" />
+          <input id="schCourseName" placeholder="Course name" />
+          <select id="schDay">
+            <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
+            <option>Thursday</option><option>Friday</option><option>Saturday</option>
+          </select>
+          <input id="schStart" placeholder="08:00" />
+          <input id="schEnd" placeholder="10:00" />
+          <input id="schRoom" placeholder="Room A101" />
+          <input id="schTeacher" placeholder="Teacher name" />
+          <select id="schSemester"><option>Semester 1</option><option>Semester 2</option></select>
+          <input id="schYear" placeholder="2025" value="2025" />
+          <select id="schGrade">
+            <option>Grade 9</option><option selected>Grade 10</option>
+            <option>Grade 11</option><option>Grade 12</option>
+          </select>
+        </div>
+        <button class="btn" onclick="adminAddSchedule()"><i class="fas fa-check"></i> Add</button>
+      </div>
+      <div class="card mt-1">
+        <h3><i class="fas fa-calendar"></i> All Schedules</h3>
+        <div id="schedulesList"></div>
+      </div>
+    </div>
+
+    <!-- COMPLAINTS -->
+    <div id="tab-complaints" class="admin-tab-content">
+      <div class="card">
+        <h3><i class="fas fa-comments"></i> Student Messages / Complaints</h3>
+        <div id="complaintsList"></div>
+      </div>
+    </div>
+
+    <!-- NEWS -->
+    <div id="tab-news" class="admin-tab-content">
+      <div class="card">
+        <h3><i class="fas fa-paper-plane"></i> Publish News</h3>
+        <input id="newsTitle" placeholder="Title" />
+        <textarea id="newsContent" rows="3" placeholder="Content"></textarea>
+        <button class="btn" onclick="adminPostNews()"><i class="fas fa-paper-plane"></i> Publish</button>
+      </div>
+      <div class="card mt-1">
+        <h3><i class="fas fa-newspaper"></i> All News</h3>
+        <div id="adminNewsList"></div>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <div id="tab-about" class="admin-tab-content">
+      <div class="card">
+        <h3><i class="fas fa-pen"></i> Edit About</h3>
+        <label>Title</label><input id="editTitle" />
+        <label>Image URL</label><input id="editImage" />
+        <label>History</label><textarea id="editHistory" rows="3"></textarea>
+        <label>Mission</label><textarea id="editMission" rows="2"></textarea>
+        <label>Vision</label><textarea id="editVision" rows="2"></textarea>
+        <button class="btn" onclick="adminSaveAbout()"><i class="fas fa-save"></i> Save</button>
+        <p id="aboutMsg" class="hint"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TEACHER ===== -->
+  <section id="page-teacher" class="page">
+    <div class="dash-header">
+      <div>
+        <h2><i class="fas fa-chalkboard-teacher"></i> Teacher Dashboard</h2>
+        <p class="muted" id="teacherMeta"></p>
+      </div>
+      <button class="btn btn-secondary" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+
+    <div class="card">
+      <h3><i class="fas fa-marker"></i> Enter Assessment</h3>
+      <p class="muted">Enter mid, final, and assignment marks. Goes to admin for approval.</p>
+      <div class="grid-2">
+        <input id="tStudentUgr" placeholder="Student UGR" />
+        <select id="tCourseCode"></select>
+        <input id="tMid" type="number" min="0" max="100" placeholder="Mid mark (0-100)" />
+        <input id="tFinal" type="number" min="0" max="100" placeholder="Final mark (0-100)" />
+        <input id="tAssign" type="number" min="0" max="100" placeholder="Assignment (0-100)" />
+        <select id="tSemester"><option>Semester 1</option><option>Semester 2</option></select>
+        <input id="tYear" value="2025" placeholder="Year" />
+        <button class="btn" onclick="teacherAddAssessment()"><i class="fas fa-save"></i> Submit</button>
+      </div>
+      <p id="tMsg" class="hint"></p>
+    </div>
+
+    <div class="card mt-1">
+      <h3><i class="fas fa-list"></i> My Submitted Assessments</h3>
+      <div id="teacherAssessments"></div>
+    </div>
+  </section>
+
+  <!-- ===== REGISTRAR ===== -->
+  <section id="page-registrar" class="page">
+    <div class="dash-header">
+      <div>
+        <h2><i class="fas fa-clipboard-check"></i> Registrar Dashboard</h2>
+        <p class="muted">Final approval of admin-approved marks</p>
+      </div>
+      <button class="btn btn-secondary" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-tab="reg-pending">⏳ Pending Final Approval</button>
+      <button class="admin-tab" data-tab="reg-all">📋 All Assessments</button>
+    </div>
+
+    <div id="tab-reg-pending" class="admin-tab-content active">
+      <div class="card">
+        <h3><i class="fas fa-hourglass-half"></i> Awaiting Registrar Approval</h3>
+        <div id="registrarPending"></div>
+      </div>
+    </div>
+
+    <div id="tab-reg-all" class="admin-tab-content">
+      <div class="card">
+        <h3><i class="fas fa-list"></i> All Assessments</h3>
+        <div id="registrarAll"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STUDENT ===== -->
+  <section id="page-student" class="page">
+    <div class="dash-header">
+      <div>
+        <h2><i class="fas fa-user-graduate"></i> <span id="studentWelcome">Student</span></h2>
+        <p class="muted" id="studentMeta"></p>
+      </div>
+      <button class="btn btn-secondary" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-tab="stu-courses">📚 My Courses</button>
+      <button class="admin-tab" data-tab="stu-results">📊 Assessment Results</button>
+      <button class="admin-tab" data-tab="stu-transcript">📄 Transcript</button>
+      <button class="admin-tab" data-tab="stu-schedule">📅 Schedule</button>
+      <button class="admin-tab" data-tab="stu-payments">💰 Payments</button>
+      <button class="admin-tab" data-tab="stu-complaints">💬 Complaints</button>
+    </div>
+
+    <div id="tab-stu-courses" class="admin-tab-content active">
+      <div class="card">
+        <h3><i class="fas fa-book-open"></i> My Enrolled Courses</h3>
+        <div id="studentCourses"></div>
+      </div>
+    </div>
+
+    <div id="tab-stu-results" class="admin-tab-content">
+      <div class="card">
+        <h3><i class="fas fa-chart-simple"></i> Assessment Results</h3>
+        <p class="muted">Mid + Final + Assignment = Total. Only approved results appear on transcript.</p>
+        <div id="studentAssessments"></div>
+      </div>
+    </div>
+
+    <div id="tab-stu-transcript" class="admin-tab-content">
+      <div class="card">
+        <h3><i class="fas fa-file-alt"></i> Official Transcript</h3>
+        <div id="studentTranscript"></div>
+        <button class="btn" style="margin-top:1rem;" onclick="downloadTranscript()">
+          <i class="fas fa-download"></i> Download Transcript (PDF)
+        </button>
+      </div>
+    </div>
+
+    <div id="tab-stu-schedule" class="admin-tab-content">
+      <div class="card">
+        <h3><i class="fas fa-calendar-alt"></i> My Weekly Schedule</h3>
+        <div id="studentSchedule"></div>
+        <button class="btn" style="margin-top:1rem;" onclick="downloadSchedule()">
+          <i class="fas fa-download"></i> Download Schedule (PDF)
+        </button>
+      </div>
+    </div>
+
+    <div id="tab-stu-payments" class="admin-tab-content">
+      <div class="card">
+        <h3><i class="fas fa-money-bill"></i> My Payments</h3>
+        <div id="studentPayments"></div>
+      </div>
+    </div>
+
+    <div id="tab-stu-complaints" class="admin-tab-content">
+      <div class="card">
+        <h3><i class="fas fa-comment-dots"></i> Submit Complaint</h3>
+        <input id="compSubject" placeholder="Subject (e.g. Library hours)" />
+        <textarea id="compMessage" rows="3" placeholder="Describe your issue or request..."></textarea>
+        <button class="btn" onclick="studentSubmitComplaint()"><i class="fas fa-paper-plane"></i> Submit</button>
+        <p id="compMsg" class="hint"></p>
+      </div>
+      <div class="card mt-1">
+        <h3><i class="fas fa-inbox"></i> My Complaints</h3>
+        <div id="studentComplaints"></div>
+      </div>
+    </div>
+  </section>
+    <!-- ===== CLEAN FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="footer-main">
+      
+      <!-- Column 1: Brand & Socials -->
+      <div class="footer-col footer-brand">
+        <div class="footer-logo">
+          <i class="fas fa-graduation-cap"></i>
+          <span>Excellence<span class="accent">Academy</span></span>
+        </div>
+        <p class="footer-tagline">Nurturing Tomorrow's Leaders through modern education, dedicated teachers, and a vibrant community.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook" class="social-icon facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Twitter" class="social-icon twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="Instagram" class="social-icon instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="LinkedIn" class="social-icon linkedin"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" aria-label="YouTube" class="social-icon youtube"><i class="fab fa-youtube"></i></a>
+          <a href="#" aria-label="Telegram" class="social-icon telegram"><i class="fab fa-telegram-plane"></i></a>
+        </div>
+      </div>
+
+      <!-- Column 2: Services -->
+      <div class="footer-col">
+        <h4 class="footer-title">Services</h4>
+        <ul class="footer-links">
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Student Registration</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Transcript Requests</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Payment Portal</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Assessment Results</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Class Schedules</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Contact Info -->
+      <div class="footer-col">
+        <h4 class="footer-title">Contact Us</h4>
+        <ul class="footer-contact">
+          <li>
+            <i class="fas fa-map-marker-alt"></i>
+            <span>123 Education Drive<br>Addis Ababa, Ethiopia</span>
+          </li>
+          <li>
+            <i class="fas fa-phone-alt"></i>
+            <span>+251 911 234 567</span>
+          </li>
+          <li>
+            <i class="fas fa-envelope"></i>
+            <span>info@excellenceacademy.edu</span>
+          </li>
+          <li>
+            <i class="fas fa-clock"></i>
+            <span>Mon – Fri: 8:00 AM – 5:00 PM</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Legal / Policies -->
+      <div class="footer-col">
+        <h4 class="footer-title">Legal</h4>
+        <ul class="footer-links">
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Terms of Service</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Cookie Policy</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i> Accessibility</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Bottom Bar (Copyright centered above) -->
+    <div class="footer-bottom">
+      <p>© 2026 Excellence Academy. All rights reserved.</p>
+    </div>
+  </footer>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
